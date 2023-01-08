@@ -20,9 +20,6 @@ public class OrderController {
     @Autowired
    private OrderServiceImpl orderService;
 
-    @Autowired
-   private UserServiceImpl userService;
-
 
     private OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
 

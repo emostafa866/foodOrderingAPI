@@ -11,7 +11,6 @@ import com.fawry.foodorderingapi.repository.FoodRepo;
 import com.fawry.foodorderingapi.repository.OrderRepo;
 import com.fawry.foodorderingapi.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +31,7 @@ public class OrderServiceImpl implements com.fawry.foodorderingapi.service.Order
     private FoodService foodService;
 
     @Autowired
-    private UserServiceImpl userService;
+    private MyUserService userService;
 
     @Autowired
     private AppGroupRepo groupRepo;
@@ -43,7 +42,7 @@ public class OrderServiceImpl implements com.fawry.foodorderingapi.service.Order
         Order order = new Order();
         order.setNumOfItems((long) orderDto.getFood().size());
         order.setItems(new ArrayList<>());
-        AppUser currentUser = userService.getCurrentUser();
+        MyUser currentUser = userService.getCurrentUser();
         AppGroup currentGroup = groupRepo.findById(groupId)
                 .orElseThrow(() -> new RecordNotFoundException("Group Not Found"));
 
@@ -76,7 +75,7 @@ public class OrderServiceImpl implements com.fawry.foodorderingapi.service.Order
     @Override
     @Transactional
     public Long createGroupOrder(Long groupId) {
-        AppUser currentUser = userService.getCurrentUser();
+        MyUser currentUser = userService.getCurrentUser();
         AppGroup currentGroup = groupRepo.findById(groupId)
                 .orElseThrow(() -> new RecordNotFoundException("Group Not Found"));
         if (currentUser.getOwnedGroups().contains(currentGroup)) {
@@ -100,7 +99,7 @@ public class OrderServiceImpl implements com.fawry.foodorderingapi.service.Order
 
     public List<Order> getAllOrdersForCurrentUser() {
 
-        AppUser currentUser = userService.getCurrentUser();
+        MyUser currentUser = userService.getCurrentUser();
         return currentUser.getOrders();
     }
 
@@ -122,11 +121,11 @@ public class OrderServiceImpl implements com.fawry.foodorderingapi.service.Order
     public List<UserOrderSummaryDto> getOrderSummaryPerUser(Long groupId) {
         UserOrderSummaryDto userOrderSummary = new UserOrderSummaryDto();
         List<UserOrderSummaryDto> listOfUserOrderSummary = new ArrayList<>();
-        AppUser currentUser = userService.getCurrentUser();
+        MyUser currentUser = userService.getCurrentUser();
         AppGroup currentGroup = groupRepo.findById(groupId)
                 .orElseThrow(() -> new RecordNotFoundException("Group Not Found"));
 
-        for (AppUser user : currentGroup.getUsers()) {
+        for (MyUser user : currentGroup.getUsers()) {
             userOrderSummary.setUsername(user.getName());
             userOrderSummary.setOrders(user.getOrders().stream()
                     .filter(order -> order.isStatus())

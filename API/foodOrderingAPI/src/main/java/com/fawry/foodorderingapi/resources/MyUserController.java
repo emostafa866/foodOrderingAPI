@@ -1,7 +1,8 @@
-package com.fawry.foodorderingapi.mySecurity;
+package com.fawry.foodorderingapi.resources;
 
 
 import com.fawry.foodorderingapi.model.UsersDto;
+import com.fawry.foodorderingapi.service.impl.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

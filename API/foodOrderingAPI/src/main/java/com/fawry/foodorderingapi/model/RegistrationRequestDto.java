@@ -1,4 +1,4 @@
-package com.fawry.foodorderingapi.mySecurity;
+package com.fawry.foodorderingapi.model;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 
 
 @Data
-public class RegistrationRequest {
+public class RegistrationRequestDto {
 
     private Long id;
     @Size(min = 2, max = 400, message = "The User Name is not valid")

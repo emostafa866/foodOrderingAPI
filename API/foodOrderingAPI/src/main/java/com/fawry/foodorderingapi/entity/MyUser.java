@@ -1,5 +1,6 @@
-package com.fawry.foodorderingapi.mySecurity;
+package com.fawry.foodorderingapi.entity;
 
+import com.fawry.foodorderingapi.model.MyUserRole;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,6 +26,12 @@ public class MyUser implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private MyUserRole myUserRole;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AppGroup> OwnedGroups;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Order> Orders;
 
 
 

@@ -1,7 +1,9 @@
-package com.fawry.foodorderingapi.mySecurity;
+package com.fawry.foodorderingapi.security;
 
 
-import com.fawry.foodorderingapi.mySecurity.filter.CustomAuthenticationFilter;
+import com.fawry.foodorderingapi.security.filter.CustomAuthenticationFilter;
+import com.fawry.foodorderingapi.security.filter.CustomAuthorizationFilter;
+import com.fawry.foodorderingapi.service.impl.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,9 +34,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/login/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/registration/**").permitAll();
+        http.authorizeRequests().antMatchers("/restaurants/**").hasAnyAuthority("USER");
+        http.authorizeRequests().antMatchers("/restaurants/**").hasAnyAuthority("USER");
+        http.authorizeRequests().antMatchers("/foods/**").hasAnyAuthority("USER");
+
 
         http.addFilter(new CustomAuthenticationFilter(authenticationManager()));
-        //http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 

@@ -1,16 +1,13 @@
 package com.fawry.foodorderingapi.service.impl;
 
 import com.fawry.foodorderingapi.entity.AppGroup;
-import com.fawry.foodorderingapi.entity.AppUser;
+import com.fawry.foodorderingapi.entity.MyUser;
 import com.fawry.foodorderingapi.entity.Restaurant;
 import com.fawry.foodorderingapi.exception.RecordNotFoundException;
 import com.fawry.foodorderingapi.mapper.NewGroupDTOAndGroupEntityMapper;
 import com.fawry.foodorderingapi.model.GroupDTO;
 import com.fawry.foodorderingapi.model.NewGroupDTO;
-import com.fawry.foodorderingapi.repository.AppGroupRepo;
-import com.fawry.foodorderingapi.repository.AppUserRepo;
-import com.fawry.foodorderingapi.repository.RestaurantRepo;
-import com.fawry.foodorderingapi.repository.OrderRepo;
+import com.fawry.foodorderingapi.repository.*;
 import com.fawry.foodorderingapi.service.GroupService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,7 @@ import java.util.stream.Collectors;
 public class  GroupServiceImpl implements GroupService {
 
     @Autowired
-    private AppUserRepo userRepo;
+    private MyUserRepo userRepo;
 
     @Autowired
     private AppGroupRepo groupRepo;
@@ -34,7 +31,7 @@ public class  GroupServiceImpl implements GroupService {
     private RestaurantRepo restaurantRepo;
 
     @Autowired
-    private UserServiceImpl userService;
+    private MyUserService myUserService;
 
     @Autowired
     private OrderRepo orderRepo;
@@ -43,7 +40,7 @@ public class  GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public AppGroup addGroup(Long userId, NewGroupDTO newGroup) {
-        AppUser appUser = userRepo.findById(userId).orElseThrow(()->new RecordNotFoundException("record user not found"));
+        MyUser appUser = userRepo.findById(userId).orElseThrow(()->new RecordNotFoundException("record user not found"));
         AppGroup appGroup = newGroupDTOAndGroupEntityMapper.NewGroupDTOToAppGroup(newGroup);
         Restaurant restaurant = restaurantRepo.findById(newGroup.getRestaurantId()).orElseThrow(()->new RecordNotFoundException("can't find user in group"));
         appGroup.setGroupIsFinished("false");
@@ -66,16 +63,16 @@ public class  GroupServiceImpl implements GroupService {
     @Transactional
     public void userJoinGroup(Long groupId, Long newUserId) {
         AppGroup appGroup = groupRepo.findById(groupId).orElseThrow(() -> new RecordNotFoundException("app group not found"));
-        AppUser appUser = userRepo.findById(newUserId).orElseThrow(() -> new RecordNotFoundException("user not found"));
+        MyUser appUser = userRepo.findById(newUserId).orElseThrow(() -> new RecordNotFoundException("user not found"));
         List<AppGroup> appGroups = appUser.getOwnedGroups()
                 .stream()
                 .filter(appGroup1 -> appGroup1.getId() == groupId)
                 .collect(Collectors.toList());
-        List<AppUser> users = appGroup.getUsersRequestToJoin()
+        List<MyUser> users = appGroup.getUsersRequestToJoin()
                 .stream()
                 .filter(appUser1 -> appUser1.getId() == newUserId)
                 .collect(Collectors.toList());
-        List<AppUser> users1 = appGroup.getUsers()
+        List<MyUser> users1 = appGroup.getUsers()
                 .stream()
                 .filter(appUser1 -> appUser1.getId() == newUserId)
                 .collect(Collectors.toList());
@@ -94,8 +91,8 @@ public class  GroupServiceImpl implements GroupService {
     @Transactional
     public void adminAcceptUserAtGroup(Long groupId, Long newUserId) {
         AppGroup appGroup = groupRepo.findById(groupId).orElseThrow(()->new RecordNotFoundException("app group not found"));
-        AppUser appUser = userRepo.findById(newUserId).orElseThrow(()->new RecordNotFoundException("user not found"));
-        List<AppUser> list = appGroup.getUsersRequestToJoin()
+        MyUser appUser = userRepo.findById(newUserId).orElseThrow(()->new RecordNotFoundException("user not found"));
+        List<MyUser> list = appGroup.getUsersRequestToJoin()
                 .stream()
                 .filter(appUser1 -> appUser1.getId() == newUserId)
                 .collect(Collectors.toList());
@@ -130,7 +127,7 @@ public class  GroupServiceImpl implements GroupService {
     @Override
     public boolean isAdmin(Long groupId, Long userId) {
         AppGroup appGroup = groupRepo.findById(groupId).orElseThrow(() -> new RecordNotFoundException("app group not found"));
-        AppUser appUser = userRepo.findById(userId).orElseThrow(() -> new RecordNotFoundException("user not found"));
+        MyUser appUser = userRepo.findById(userId).orElseThrow(() -> new RecordNotFoundException("user not found"));
         List<AppGroup> appGroups = appUser.getOwnedGroups()
                 .stream()
                 .filter(appGroup1 -> appGroup1.getId() == groupId)
@@ -144,7 +141,7 @@ public class  GroupServiceImpl implements GroupService {
     public boolean isGroupUser(Long groupId){
 
         AppGroup appGroup = groupRepo.findById(groupId).orElseThrow(() -> new RecordNotFoundException("app group not found"));
-        AppUser currentUser=userService.getCurrentUser();
+        MyUser currentUser=myUserService.getCurrentUser();
         return appGroup.getUsers().contains(currentUser);
 
     }

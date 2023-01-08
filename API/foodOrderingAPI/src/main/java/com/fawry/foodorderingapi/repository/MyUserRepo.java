@@ -1,5 +1,6 @@
-package com.fawry.foodorderingapi.mySecurity;
+package com.fawry.foodorderingapi.repository;
 
+import com.fawry.foodorderingapi.entity.MyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

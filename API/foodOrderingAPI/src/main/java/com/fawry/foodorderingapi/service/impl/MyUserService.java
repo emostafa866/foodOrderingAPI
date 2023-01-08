@@ -1,10 +1,13 @@
-package com.fawry.foodorderingapi.mySecurity;
+package com.fawry.foodorderingapi.service.impl;
 
+import com.fawry.foodorderingapi.entity.MyUser;
 import com.fawry.foodorderingapi.exception.RecordNotFoundException;
-import com.fawry.foodorderingapi.mapper.NewUserDTOAndAppUserEntityMapper;
 import com.fawry.foodorderingapi.model.UsersDto;
-import org.mapstruct.factory.Mappers;
+import com.fawry.foodorderingapi.model.MyUserRole;
+import com.fawry.foodorderingapi.repository.MyUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,6 +48,16 @@ public class MyUserService implements UserDetailsService {
 
         myUserRepo.save(user);
 
+    }
+
+    public MyUser getCurrentUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = auth.getName();
+        MyUser currentUser = myUserRepo.findByEmail(currentUserName).orElseThrow(
+                ()-> new RecordNotFoundException("User NOt Found")
+        );
+
+        return currentUser;
     }
 
 }

@@ -7,7 +7,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -31,10 +30,10 @@ public class AppGroup {
     private Restaurant restaurant;
 
     @ManyToMany
-    private List<AppUser> Users;
+    private List<MyUser> Users;
 
     @ManyToMany(cascade = CascadeType.ALL)
-   private List<AppUser> UsersRequestToJoin;
+   private List<MyUser> UsersRequestToJoin;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Order> order;

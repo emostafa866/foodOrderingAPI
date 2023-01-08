@@ -43,7 +43,7 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
-    private AppUser user;
+    private MyUser user;
 
     @JsonIgnore
     @ManyToOne
