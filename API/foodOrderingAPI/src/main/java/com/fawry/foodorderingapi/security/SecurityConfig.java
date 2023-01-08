@@ -14,17 +14,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.http.HttpServletResponse;
 
-@Configuration // Marks this as a configuration file
-@EnableWebSecurity // Enables security for this application
+//@Configuration // Marks this as a configuration file
+//@EnableWebSecurity // Enables security for this application
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Injecting Dependencies
-    @Autowired private JWTFilter filter;
-    @Autowired private MyUserDetailsService uds;
+   // @Autowired private JWTFilter filter;
+  //  @Autowired private MyUserDetailsService uds;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception { // Method to configure your app security
-        System.out.println("inside security configuration");
+      /*  System.out.println("inside security configuration");
         http.csrf().disable() // Disabling csrf
                 .httpBasic().disable() // Disabling http basic
                 .cors() // Enabling cors
@@ -54,15 +54,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // Creating a bean for the password encoder
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    //@Bean
+   // public PasswordEncoder passwordEncoder() {
+    //    return new BCryptPasswordEncoder();
+    //}
 
     // Exposing the bean of the authentication manager which will be used to run the authentication process
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+    */
     }
 }

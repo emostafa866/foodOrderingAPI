@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private AppUserRepo userRepo;
     private NewUserDTOAndAppUserEntityMapper mapper = Mappers.getMapper(NewUserDTOAndAppUserEntityMapper.class);
@@ -33,4 +34,7 @@ public class UserServiceImpl implements UserService {
 
         return currentUser;
     }
+
+
+
 }

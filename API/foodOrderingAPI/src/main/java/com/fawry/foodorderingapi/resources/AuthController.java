@@ -20,10 +20,11 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
+/*
     @Autowired
     private AppUserRepo userRepo;
     @Autowired
@@ -39,14 +40,16 @@ public class AuthController {
     private NewUserDTOAndAppUserEntityMapper userMapper = Mappers.getMapper(NewUserDTOAndAppUserEntityMapper.class);
 
     @PostMapping("/register")
-    public Map<String, Object> registerHandler(@Valid @RequestBody UsersDto newUser) {
+    public String registerHandler(@Valid @RequestBody UsersDto newUser) {
+        System.out.println("test");
 
-        AppUser persist = userRepo.findByEmail(newUser.getEmail()).orElse(null);
-        if (persist != null) {
-            throw new RuntimeException("duplicated intern");
+        boolean isExist = userRepo.findByEmail(newUser.getEmail()).isPresent();
+        if(isExist){
+            throw new IllegalStateException("USER ALREADY EXIST");
         }
 
         AppUser user = userMapper.userDtoModelToAppUserEntity(newUser);
+
 
         String encodedPass = passwordEncoder.encode(user.getPassword());
 
@@ -54,9 +57,7 @@ public class AuthController {
 
         user = userRepo.save(user);
 
-        String token = jwtUtil.generateToken(user.getEmail());
-
-        return Collections.singletonMap("jwt-token", token);
+        return "user created";
     }
 
     @PostMapping("/login")
@@ -70,11 +71,11 @@ public class AuthController {
 
             String token = jwtUtil.generateToken(body.getEmail());
 
-            return Collections.singletonMap("jwt-token", token);
+            return Collections.singletonMap("jwt", token);
         } catch (AuthenticationException authExc) {
             throw new RuntimeException("Invalid Login Credentials");
         }
     }
 
-
+*/
 }

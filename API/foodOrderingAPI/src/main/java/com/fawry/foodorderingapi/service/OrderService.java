@@ -22,4 +22,6 @@ public interface OrderService {
     public List<ItemOrderSummaryDto>getOrderSummaryPerItem(Long groupId);
 
     public List<UserOrderSummaryDto>getOrderSummaryPerUser(Long groupId);
+
+
 }

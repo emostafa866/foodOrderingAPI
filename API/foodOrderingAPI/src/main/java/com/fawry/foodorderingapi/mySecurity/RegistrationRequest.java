@@ -1,25 +1,21 @@
-package com.fawry.foodorderingapi.model;
+package com.fawry.foodorderingapi.mySecurity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class UsersDto {
+
+@Data
+public class RegistrationRequest {
 
     private Long id;
     @Size(min = 2, max = 400, message = "The User Name is not valid")
 
     @Size(min = 2, max = 400, message = "The User Name is not valid")
     private String name;
-    //    @Size(min = 11,max = 11,message = "The Phone is not valid")
-    @NotNull(message = "Phone is not null")
+
+    @NotNull(message = "Phone is null")
     private String phone;
 
     @Size(min = 2, max = 400, message = "The User email is not valid")
@@ -27,4 +23,5 @@ public class UsersDto {
 
     @Size(min = 6, max = 4000, message = "The Password is not valid")
     private String password;
+
 }

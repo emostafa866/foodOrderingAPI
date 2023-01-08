@@ -34,7 +34,7 @@ public class AppGroup {
     private List<AppUser> Users;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<AppUser> UsersRequestToJoin;
+   private List<AppUser> UsersRequestToJoin;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Order> order;
